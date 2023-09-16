@@ -3,20 +3,22 @@ function getFirstFiveRatings(ratings) {
 }
 
 function sumFirstFiveRatings(ratings) {
-  const ratingsBool = !!ratings
+  const ratingsBool = Boolean(ratings)
 
   if (ratingsBool) {
     const firstFiveRatings = getFirstFiveRatings(ratings)
 
     if (!firstFiveRatings) return { error: 'there must be at least 5 ratings' }
 
-    let ratingsSum = 0;
+    let ratingsSum = 0
 
     for (const rating of firstFiveRatings) {
-      ratingsSum += +rating
+      ratingsSum += Number(rating)
     }
 
-    return { ratingsSum, created_at: +new Date() }
+    const created_at = new Date().getTime()
+
+    return { ratingsSum, created_at }
   }
 
   return { error: 'ratings is required' }
