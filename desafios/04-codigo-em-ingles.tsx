@@ -1,9 +1,9 @@
-// Código em inglês 
-import { useState } from "react"
+// Código em inglês
+import { useState } from 'react'
 
 interface Product {
-  title: string;
-  price: string;
+  title: string
+  price: string
 }
 
 const productList = [
@@ -17,27 +17,27 @@ const productList = [
   }
 ]
 
-export function ListProduto() {
-  const [filteredProdutos, setFilteredProdutos] = useState<Product[]>([])
+export function ListProduct() {
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
 
-  function searchProduto(search: string) {
-    const filtrado = productList.filter(product => product.title.includes(search))
+  function searchProducts(searchTerm: string) {
+    const productsFiltered = productList.filter((product) =>
+      product.title.includes(searchTerm)
+    )
 
-    setFilteredProdutos(filtrado)
+    setFilteredProducts(productsFiltered)
   }
 
   return (
     <div>
-      <input type="text" onChange={(e) => searchProduto(e.target.value)} />
+      <input type="text" onChange={(e) => searchProducts(e.target.value)} />
 
-      {filteredProdutos.map(produto => (
+      {filteredProducts.map((product) => (
         <div>
-          <p>{produto.title}</p>
-          <p>{produto.price}</p>
+          <p>{product.title}</p>
+          <p>{product.price}</p>
         </div>
       ))}
     </div>
   )
 }
-
-
