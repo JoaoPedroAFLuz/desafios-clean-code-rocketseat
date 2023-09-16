@@ -1,11 +1,17 @@
 function updateUserRoute(body, params) {
-  updateUserController(body, params)
+  const { id } = params
+  const { name, email, password } = body
+
+  updateUserController({ body: { name, email, password }, params: { id } })
 }
 
-function updateUserController(data, params) {
-  userRepository.update(data, params)
+function updateUserController({
+  body: { name, email, password },
+  params: { id }
+}) {
+  userRepository.update({ id, name, email, password })
 }
 
 const userRepository = {
-  update: (data, params) => {},
+  update: ({ id, name, email, password }) => {}
 }
