@@ -1,55 +1,73 @@
 // Nomenclatura de variáveis
+const fetch = require("node-fetch");
 
-const list = [
+const categories = [
   {
-    title: 'User',
-    followers: 5
+    title: "New",
+    followers: 0,
   },
   {
-    title: 'Friendly',
+    title: "User",
+    followers: 5,
+  },
+  {
+    title: "Friendly",
     followers: 50,
   },
   {
-    title: 'Famous',
+    title: "Famous",
     followers: 500,
   },
   {
-    title: 'Super Star',
+    title: "Super Star",
     followers: 1000,
   },
-]
+];
 
-export default async function getData(req, res) {
-  const github = String(req.query.username)
+export default async function getUserCategory(req, res) {
+  const username = String(req.query.username);
 
-  if (!github) {
+  if (!username) {
     return res.status(400).json({
-      message: `Please provide an username to search on the github API`
-    })
+      message: `Please provide an username to search on the github API`,
+    });
   }
 
-  const response = await fetch(`https://api.github.com/users/${github}`);
+  const gitHubApiResponse = await fetch(
+    `https://api.github.com/users/${username}`
+  );
 
-  if (response.status === 404) {
+  if (gitHubApiResponse.status === 404) {
     return res.status(400).json({
-      message: `User with username "${github}" not found`
-    })
+      message: `User with username "${username}" not found`,
+    });
   }
 
-  const data = await response.json()
+  const userData = await gitHubApiResponse.json();
 
-  const orderList = list.sort((a, b) =>  b.followers - a.followers); 
+  const orderedCategories = categories.sort(
+    (categoryA, categoryB) => categoryB.followers - categoryA.followers
+  );
 
-  const category = orderList.find(i => data.followers > i.followers)
+  const category = orderedCategories.find(
+    (category) => userData.followers >= category.followers
+  );
 
-  const result = {
-    github,
-    category: category.title
-  }
+  const userInfo = {
+    github: username,
+    category: category.title,
+  };
 
-  return result
+  console.log("User Info:", userInfo);
+
+  return userInfo;
 }
 
-getData({ query: {
-  username: 'josepholiveira'
-}}, {})
+getUserCategory(
+  {
+    query: {
+      username: "JoaoPedroAFLuz",
+    },
+  },
+  {}
+);
